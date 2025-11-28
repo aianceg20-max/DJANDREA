@@ -27,7 +27,7 @@
     body.upside-down-mode {
       background-color: #000814;
       background-image:
-        url("https://cdn.discordapp.com/attachments/886254638452600892/1444100494753792200/Upside-Down.png?ex=692b7ae4&is=692a2964&hm=fbb133d99459b1e70c0deff4f49a53deec8f4062156e93622b953655825b9ea4"),
+        url("Upside-Down.png"),
         radial-gradient(circle at top, #001a33 0, #000814 45%, #000 100%);
       background-size: cover;
       background-position: center;
@@ -48,7 +48,7 @@
       z-index: 2;
     }
 
-    /* moving FOG layer */
+    /* moving fog */
     .fog {
       position: fixed;
       inset: -20%;
@@ -72,7 +72,7 @@
       100% { transform: translateX(-30px); }
     }
 
-    /* Vecna-style vines on sides */
+    /* vines */
     .vine {
       position: fixed;
       top: -10%;
@@ -104,7 +104,7 @@
         linear-gradient(to bottom, #050033 0, #000 100%);
     }
 
-    /* floating particles */
+    /* particles */
     .particle {
       position: fixed;
       width: 3px;
@@ -153,7 +153,6 @@
       background: radial-gradient(circle at top, #00001a 0, #020010 60%, #000 100%);
     }
 
-    /* soft heartbeat pulse */
     @keyframes heartbeat {
       0%   { transform: scale(1); }
       15%  { transform: scale(1.03); }
@@ -163,7 +162,6 @@
       100% { transform: scale(1); }
     }
 
-    /* flicker animation when YES is clicked */
     .card.flicker {
       animation: cardFlicker 0.6s linear 1;
     }
@@ -364,7 +362,7 @@
       opacity: 0.9;
     }
 
-    /* Demogorgon image jumpscare overlay */
+    /* Demogorgon image jumpscare */
     #demoJumpscare {
       position: fixed;
       inset: 0;
@@ -399,6 +397,15 @@
       color: #eee;
       font-size: 10px;
     }
+
+    @media (max-width: 420px) {
+      h1 {
+        font-size: 22px;
+      }
+      .card {
+        padding: 20px 14px 26px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -416,7 +423,7 @@
 
 <!-- Demogorgon image jumpscare -->
 <div id="demoJumpscare">
-<img src="ST-DMGG_32_MF1-removebg-preview.png">
+  <img src="ST-DMGG_32_MF1-removebg-preview.png" alt="Demogorgon">
 </div>
 
 <div class="card">
@@ -437,7 +444,7 @@
   <p class="message">
     Lately it feels like every time you are around,
     the world glitches a little bit and my brain goes
-    <span class="highlight">“uh oh… this is definitely more than friends.”</span><br><br>
+    <span class="highlight">uh oh, this is definitely more than friends.</span><br><br>
     So before the Upside Down eats my courage completely, here it is:
   </p>
 
@@ -475,7 +482,7 @@
   const bgm = document.getElementById("bgm");
 
   let noClicks = 0;
-  const maxNoClicks = 3;
+  const maxNoClicks = 2; // 1st = run away, 2nd = jumpscare
 
   yesBtn.addEventListener("click", () => {
     body.classList.add("upside-down-mode");
@@ -499,11 +506,11 @@
     const cardRect = card.getBoundingClientRect();
     const btnRect = noBtn.getBoundingClientRect();
 
-    const maxLeft = cardRect.width - btnRect.width - 20;
-    const maxTop = cardRect.height - btnRect.height - 70;
+    const maxLeft = cardRect.width - btnRect.width - 40;
+    const maxTop = cardRect.height - btnRect.height - 80;
 
-    const randomLeft = Math.max(10, Math.random() * maxLeft);
-    const randomTop = Math.max(45, Math.random() * maxTop);
+    const randomLeft = 20 + Math.random() * Math.max(20, maxLeft);
+    const randomTop = 50 + Math.random() * Math.max(20, maxTop);
 
     noBtn.style.position = "absolute";
     noBtn.style.left = randomLeft + "px";
@@ -515,16 +522,12 @@
 
     if (noClicks < maxNoClicks) {
       moveNoBtn();
-
-      const messages = [
-        "Nice try. The multiverse clearly approves of us.",
-        "Error 404: NO not found in this timeline."
-      ];
-      answer.textContent = messages[noClicks - 1] || messages[messages.length - 1];
+      answer.textContent =
+        "Nice try. The multiverse clearly approves of us.";
     } else {
       noBtn.style.display = "none";
       answer.textContent =
-        "NO escaped to another dimension. Looks like YES is the only option now.";
+        "No escaped to another dimension. Looks like yes is the only option now.";
 
       demo.classList.add("show");
       setTimeout(() => {
